@@ -21,9 +21,6 @@ class CWOLWrightFisher(WrightFisher):
         super(CWOLWrightFisher, self).__init__(payoff_matrix, player_dist, *args, **kwargs)
 
 
-
-
-
 class SimulationWrapper(object):
 
     def __init__(self, fixed_kwarg, vary_kwarg, vary_range, num_repetitions=500):
