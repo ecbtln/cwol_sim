@@ -18,7 +18,7 @@ class CWOLWrightFisher(WrightFisher):
 
         payoff_matrix = [payoff_matrix_p1, payoff_matrix_p2]
         player_dist = (player1_prop, 1 - player1_prop)
-        super(CWOLWrightFisher, self).__init__(payoff_matrix, player_dist, *args, **kwargs)
+        super(CWOLWrightFisher, self).__init__(payoff_matrix=payoff_matrix, player_frequencies=player_dist, *args, **kwargs)
 
 
 class SimulationWrapper(object):
