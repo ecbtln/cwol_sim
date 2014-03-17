@@ -1,5 +1,6 @@
 from dynamics_sim import Game
 
+
 class CWOL(Game):
     DEFAULT_PARAMS = dict(a=1, b=1, c_low=4, c_high=12, d=-10, w=0.895, p=0.51, player1_prop=0.5)
 
@@ -16,7 +17,7 @@ class CWOL(Game):
 
         payoff_matrix = [payoff_matrix_p1, payoff_matrix_p2]
         player_dist = (player1_prop, 1 - player1_prop)
-        super(CWOL, self).__init__(payoff_matrix=payoff_matrix, player_frequencies=player_dist)
+        super(CWOL, self).__init__(payoff_matrices=payoff_matrix, player_frequencies=player_dist)
 
     def classify(self, params, state, tolerance):
         pass
