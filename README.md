@@ -1,1 +1,1 @@
-A wright fisher simulation that simulates a cooperate without looking game.
+A simulattion for the cooperate without looking game that makes use of the generic simulation library
