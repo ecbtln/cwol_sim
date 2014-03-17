@@ -20,7 +20,17 @@ class CWOL(Game):
         super(CWOL, self).__init__(payoff_matrices=payoff_matrix, player_frequencies=player_dist)
 
     def classify(self, params, state, tolerance):
-        pass
+        # for convenience, we will guarantee that the state is normalized already to proportions, not absolute number of players
+        # CWL
+        threshold = 1 - tolerance
+        if state[1][1] > threshold and state[0][0] + state[0][1] > threshold:
+            return "CWL"
+        elif state[0][0] > threshold and True:  # TODO: fix for player 2's conditions
+            return "CWOL"
+        elif state[0][3] > threshold and True:  # TODO: fix for player 2's conditions
+            return "All D"
+        else:
+            return super(CWOL, self).classify(params, state, tolerance)
 
 
 
