@@ -3,6 +3,9 @@ from dynamics_sim import Game
 
 class CWOL(Game):
     DEFAULT_PARAMS = dict(a=1, b=1, c_low=4, c_high=12, d=-10, w=0.895, p=0.51, player1_prop=0.5)
+    PLAYER_LABELS = ('Player 1', 'Player 2')
+    STRATEGY_LABELS = (('CWOL', 'CWL', 'C if Low', 'All D'),
+                       ('Exit if Look', 'Exit if Defect', 'Always Exit'))
 
     def __init__(self, a, b, c_low, c_high, d, w, p, player1_prop):
         payoff_matrix_p1 = ((a / (1 - w), a / (1 - w), a),
