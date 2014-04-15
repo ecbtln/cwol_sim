@@ -10,6 +10,10 @@ class TestCase(unittest.TestCase):
         s = GameDynamicsWrapper(CWOL, WrightFisher, dynamics_kwargs=dict(mu=0.07), game_kwargs=dict())
         s.simulate()
 
+    def test_many_simulation(self):
+        s = GameDynamicsWrapper(CWOL, WrightFisher, dynamics_kwargs=dict(mu=0.07), game_kwargs=dict())
+        print s.simulate_many(num_iterations=1000, num_gens=100)
+
 
 if __name__ == '__main__':
     unittest.main()
