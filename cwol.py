@@ -23,7 +23,8 @@ class CWOL(Game):
         player_dist = (player1_prop, 1 - player1_prop)
         super(CWOL, self).__init__(payoff_matrices=payoff_matrix, player_frequencies=player_dist, equilibrium_tolerance=equilibrium_tolerance)
 
-    def classify(self, params, state, tolerance):
+    @classmethod
+    def classify(cls, params, state, tolerance):
         # for convenience, we will guarantee that the state is normalized already to proportions, not absolute number of players
         # CWL
         p = params
@@ -40,7 +41,7 @@ class CWOL(Game):
         (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2])*(p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / ( 1 - p.p * p.w) - tolerance):
             return 2
         else:
-            return super(CWOL, self).classify(params, state, tolerance)
+            return super(CWOL, cls).classify(params, state, tolerance)
 
 
 

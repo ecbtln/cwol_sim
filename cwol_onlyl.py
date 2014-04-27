@@ -1,12 +1,13 @@
 from dynamics_sim import Game
+from cwol import CWOL
 
 
 class CWOLOnlyL(Game):
-    DEFAULT_PARAMS = dict(a=1, b=1, c_low=4, c_high=12, d=-10, w=0.895, p=0.51, player1_prop=0.5)
-    PLAYER_LABELS = ('Player 1', 'Player 2')
-    STRATEGY_LABELS = (('CWOL', 'CWL', 'C if Low', 'All D'),
-                       ('Exit if Look', 'Exit if Defect', 'Always Exit', 'Only L'))
-    EQUILIBRIA_LABELS = ('CWL', 'CWOL', 'All D', 'Only L')
+    DEFAULT_PARAMS = CWOL.DEFAULT_PARAMS
+    PLAYER_LABELS = CWOL.PLAYER_LABELS
+    STRATEGY_LABELS = (CWOL.STRATEGY_LABELS[0],
+                       CWOL.STRATEGY_LABELS[1] + ('Only L', ))
+    EQUILIBRIA_LABELS = CWOL.EQUILIBRIA_LABELS + ('Only L', )
 
     def __init__(self, a, b, c_low, c_high, d, w, p, player1_prop, equilibrium_tolerance=.1):
         payoff_matrix_p1 = ((a / (1 - w), a / (1 - w), a, a / (1 - w)),
@@ -23,26 +24,13 @@ class CWOLOnlyL(Game):
         player_dist = (player1_prop, 1 - player1_prop)
         super(CWOLOnlyL, self).__init__(payoff_matrices=payoff_matrix, player_frequencies=player_dist, equilibrium_tolerance=equilibrium_tolerance)
 
-    def classify(self, params, state, tolerance):
-        # for convenience, we will guarantee that the state is normalized already to proportions, not absolute number of players
-        # CWL
-        p = params
+    @classmethod
+    def classify(cls, params, state, tolerance):
         threshold = 1 - tolerance
-
-        if state[1][1] > threshold and state[0][0] + state[0][1] > threshold:
-            return 0
-        elif state[0][0] > threshold and \
-                                p.a / (1 - p.w) >= state[1][0] * (p.a * p.p + p.c_high * (1 - p.p)) + \
-                                (1 - state[1][0])*((p.a * p.p + p.c_high * (1 - p.p))/(1 - p.p*p.w)) - threshold:
-            return 1
-        elif state[0][3] > threshold and \
-        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][1]) * (p.a / (1 - p.w)) + state[1][2] * p.a - tolerance) and \
-        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2])*(p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / ( 1 - p.p * p.w) - tolerance):
-            return 2
-        elif state[0][2] > threshold and state[1][3] > threshold:
+        if state[0][2] > threshold and state[1][3] > threshold:
             return 3
         else:
-            return super(CWOLOnlyL, self).classify(params, state, tolerance)
+            return CWOL.classify(params, state, tolerance)
 
 
 
