@@ -31,14 +31,20 @@ class CWOL(Game):
         threshold = 1 - tolerance
 
         if state[1][1] > threshold and state[0][0] + state[0][1] > threshold:
+            # CWL
             return 0
         elif state[0][0] > threshold and \
                                 p.a / (1 - p.w) >= state[1][0] * (p.a * p.p + p.c_high * (1 - p.p)) + \
-                                (1 - state[1][0])*((p.a * p.p + p.c_high * (1 - p.p))/(1 - p.p*p.w)) - threshold:
+                                (1 - state[1][0]) * ((p.a * p.p + p.c_high * (1 - p.p)) / (1 - p.p * p.w)) - threshold:
+            # CWOL
             return 1
         elif state[0][3] > threshold and \
         (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][1]) * (p.a / (1 - p.w)) + state[1][2] * p.a - tolerance) and \
-        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2])*(p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / ( 1 - p.p * p.w) - tolerance):
+        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2]) * (p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / ( 1 - p.p * p.w) - tolerance):
+            # ALL D
+            return 2
+        elif state[0][3] > threshold and state[1][0] > threshold:
+            # ALL D, since its not CWOL
             return 2
         else:
             return super(CWOL, cls).classify(params, state, tolerance)
