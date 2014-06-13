@@ -12,7 +12,7 @@ class TestCase(unittest.TestCase):
         s.simulate(num_gens=30000)
 
     def test_single_simulation(self):
-        s = GameDynamicsWrapper(CWOL, WrightFisher, game_kwargs=dict(a=.2))
+        s = GameDynamicsWrapper(CWOL, WrightFisher, game_kwargs=dict())
         s.simulate(num_gens=300)
 
     def test_many_simulation(self):
@@ -50,6 +50,9 @@ class TestCase(unittest.TestCase):
     def test_3d_graphb(self):
         s = VariedGame(CWOL, WrightFisher)
         s.vary_2params('c_high', (4.05, 20.95, 35), 'p', (0.1, 0.9, 35), num_iterations=2, num_gens=150)
+
+    def test_validate_classifier(self):
+        CWOL.validate_classifier(timeout=60)
 
 if __name__ == '__main__':
     unittest.main()

@@ -42,6 +42,8 @@ class CWOL(Game):
         (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][1]) * (p.a / (1 - p.w)) + state[1][2] * p.a - tolerance) and \
         (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2]) * (p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / (1 - p.p * p.w) - tolerance):
             # ALL D
+        #p.p * p.c_low + (1 - p.p) * p.c_high >= (1 - state[1][2]) * p.a / (1 - p.w) + state[1][2] * p.a - tolerance and \
+        #p.p * p.c_low + (1 - p.p) * p.c_high >= (1 - state[1][0]) * (p.a * p.c_high * (1 - p.p)) + state[1][0] * (p.a * p.p + p.c_high * (1 - p.p) / (1 - p.p * p.w)) + state[1][2] * (p.a * p.p + p.c_high * (1 - p.p)) - tolerance:
             return 2
         elif state[0][3] > threshold and state[1][0] > threshold:
             # ALL D, since its not CWOL
