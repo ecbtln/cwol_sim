@@ -7,6 +7,10 @@ import unittest
 
 
 class TestCase(unittest.TestCase):
+    def setUp(self):
+        import logging
+        logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+
     def test_single_simulation_moran(self):
         s = GameDynamicsWrapper(CWOLOnlyL, Moran, dynamics_kwargs=dict(pop_size=3000), game_kwargs=dict(a=0.2, equilibrium_tolerance=.5))
         s.simulate(num_gens=30000)
@@ -52,7 +56,7 @@ class TestCase(unittest.TestCase):
         s.vary_2params('c_high', (4.05, 20.95, 35), 'p', (0.1, 0.9, 35), num_iterations=2, num_gens=150)
 
     def test_validate_classifier(self):
-        CWOL.validate_classifier(timeout=10, tolerance=0)
+        CWOL.validate_classifier(timeout=300, tolerance=0.05)
 
 if __name__ == '__main__':
     unittest.main()

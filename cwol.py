@@ -34,7 +34,7 @@ class CWOL(Game):
             # CWL
             return 0
         elif state[0][0] >= threshold and state[1][0] + state[1][1] >= threshold and \
-                                p.a / (1 - p.w) >= p.p *(state[1][0] * p.a + state[1][1] * (p.a + p.w * (p.a * p.p + p.c_high * (1 - p.p))) / (1 - p.p * p.w)) + (1 - p.p) * p.c_high - tolerance:
+                                p.a / (1 - p.w) >= (p.p * p.a + (1 - p.p) * p.c_high) / (1 - p.p * p.w * state[1][1]) - tolerance:
             # CWOL
             return 1
         elif state[0][3] >= threshold and \
