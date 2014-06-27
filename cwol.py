@@ -8,7 +8,7 @@ class CWOL(Game):
                        ('Exit if Look', 'Exit if Defect', 'Always Exit'))
     EQUILIBRIA_LABELS = ('CWL', 'CWOL', 'All D')
 
-    def __init__(self, a, b, c_low, c_high, d, w, p, player1_prop, equilibrium_tolerance=.1):
+    def __init__(self, a, b, c_low, c_high, d, w, p, player1_prop, equilibrium_tolerance=0.1):
         payoff_matrix_p1 = ((a / (1 - w), a / (1 - w), a),
                             (a, a / (1 - w), a),
                             (a * p + c_high * (1 - p), (a * p + c_high * (1 - p)) / (1 - p * w), a * p + c_high * (1 - p)),
@@ -30,24 +30,21 @@ class CWOL(Game):
         p = params
         threshold = 1 - tolerance
 
-        if state[1][1] > threshold and state[0][0] + state[0][1] > threshold:
+        if state[1][1] >= threshold and state[0][0] + state[0][1] >= threshold:
             # CWL
             return 0
-        elif state[0][0] > threshold and \
-                                p.a / (1 - p.w) >= state[1][0] * (p.a * p.p + p.c_high * (1 - p.p)) + \
-                                (1 - state[1][0]) * ((p.a * p.p + p.c_high * (1 - p.p)) / (1 - p.p * p.w)) - threshold:
+        elif state[0][0] >= threshold and state[1][0] + state[1][1] >= threshold and \
+                                p.a / (1 - p.w) >= p.p *(state[1][0] * p.a + state[1][1] * (p.a + p.w * (p.a * p.p + p.c_high * (1 - p.p))) / (1 - p.p * p.w)) + (1 - p.p) * p.c_high - tolerance:
             # CWOL
             return 1
-        elif state[0][3] > threshold and \
-        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][1]) * (p.a / (1 - p.w)) + state[1][2] * p.a - tolerance) and \
-        (p.p * p.c_low + (1 - p.p) * p.c_high >= (state[1][0] + state[1][2]) * (p.a * p.p + p.c_high * (1 - p.p)) + state[1][1] * (p.a * p.p + p.c_high * (1 - p.p)) / (1 - p.p * p.w) - tolerance):
-            # ALL D
-        #p.p * p.c_low + (1 - p.p) * p.c_high >= (1 - state[1][2]) * p.a / (1 - p.w) + state[1][2] * p.a - tolerance and \
-        #p.p * p.c_low + (1 - p.p) * p.c_high >= (1 - state[1][0]) * (p.a * p.c_high * (1 - p.p)) + state[1][0] * (p.a * p.p + p.c_high * (1 - p.p) / (1 - p.p * p.w)) + state[1][2] * (p.a * p.p + p.c_high * (1 - p.p)) - tolerance:
+        elif state[0][3] >= threshold and \
+            p.p * p.c_low + (1 - p.p) * p.c_high >= (1 - state[1][2]) * p.a / (1 - p.w) + state[1][2] * p.a - tolerance and \
+            p.p * p.c_low + (1 - p.p) * p.c_high >= state[1][1] * p.a / (1 - p.w) + (1 - state[1][1]) * p.a - tolerance and \
+            p.p * p.c_low + (1 - p.p) * p.c_high >= state[1][0] * (p.a * p.p + p.c_high * (1 - p.p)) + state[1][0] * (p.a * p.p + p.c_high * (1 - p.p) / (1 - p.p * p.w)) + state[1][2] * (p.a * p.p + p.c_high * (1 - p.p)) - tolerance:
             return 2
-        elif state[0][3] > threshold and state[1][0] > threshold:
-            # ALL D, since its not CWOL
-            return 2
+        # elif state[0][3] > threshold and state[1][0] > threshold:
+        #     # ALL D, since its not CWOL
+        #     return 2
         else:
             return super(CWOL, cls).classify(params, state, tolerance)
 

@@ -52,7 +52,7 @@ class TestCase(unittest.TestCase):
         s.vary_2params('c_high', (4.05, 20.95, 35), 'p', (0.1, 0.9, 35), num_iterations=2, num_gens=150)
 
     def test_validate_classifier(self):
-        CWOL.validate_classifier(timeout=60)
+        CWOL.validate_classifier(timeout=10, tolerance=0)
 
 if __name__ == '__main__':
     unittest.main()
