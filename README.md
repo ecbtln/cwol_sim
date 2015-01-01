@@ -1,1 +1,1 @@
-A simulattion for the cooperate without looking game that makes use of the generic simulation library
+A simulation for the cooperate without looking game that makes use of the generic simulation library
